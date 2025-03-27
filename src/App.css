@@ -1,38 +1,143 @@
-.App {
+/* Fullscreen Homepage Container */
+.homepage-container {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+
+/* Maintain Full-Screen, Responsive, and Cover Properly */
+.homepage-background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url('/public/homepage.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+body {
+  margin: 0;
+  font-family: 'Arial', sans-serif;
+  overflow-x: hidden;
+  scroll-behavior: smooth;
+}
+
+/* Homepage Section */
+.homepage-container {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  background-image: url('/public/homepage.jpg');
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   text-align: center;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+/* Upload Section */
+.upload-section {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  background-image: url('/public/upload.jpg'); /* Upload section background retained */
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
   display: flex;
   flex-direction: column;
-  align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  align-items: center;
+  padding: 20px;
+  text-align: center;
 }
 
-.App-link {
-  color: #61dafb;
+.upload-box {
+  width: 100%;
+  max-width: 500px;
+  height: 200px;
+  border: 2px dashed #ccc;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(255, 255, 255, 0.8); /* Semi-transparent for better contrast */
+  cursor: pointer;
+  transition: background 0.3s;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.upload-box:hover {
+  background-color: rgba(255, 255, 255, 1);
+}
+
+.section-title {
+  font-size: 2.5rem;
+  margin-bottom: 10px;
+  color: #333;
+}
+
+.section-subtitle {
+  font-size: 1.2rem;
+  margin-bottom: 20px;
+  color: #666;
+}
+
+.file-input {
+  display: none;
+}
+
+/* Scroll Indicator */
+.scroll-indicator {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 4px;
+  background: linear-gradient(to right, #ff6f61, #ff3f34);
+  z-index: 9999;
+  transition: width 0.2s ease-out;
+}
+
+/* Image Preview */
+.image-preview-container {
+  margin-top: 20px;
+  text-align: center;
+}
+
+.image-preview {
+  width: 100%;
+  max-width: 600px;
+  height: auto;
+  border: 2px solid #ccc;
+  border-radius: 10px;
+  margin-top: 10px;
+}
+
+/* Button Group for Clear Action */
+.button-group {
+  margin-top: 10px;
+}
+
+.clear-button {
+  padding: 8px 16px;
+  font-size: 1rem;
+  background-color: #ff3f34;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.clear-button:hover {
+  background-color: #ff1e00;
 }
