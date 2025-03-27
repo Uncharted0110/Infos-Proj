@@ -54,7 +54,7 @@ function App() {
             onClick={() => uploadSectionRef.current.click()}
           >
             <h2 className="section-title">Upload Your Image</h2>
-            <p className="section-subtitle">Get instant translations!</p>
+            <p className="section-subtitle">Get your translations!</p>
             <input
               ref={uploadSectionRef}
               type="file"

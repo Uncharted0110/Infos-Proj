@@ -1,29 +1,8 @@
-/* Fullscreen Homepage Container */
-.homepage-container {
-  width: 100%;
-  height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  overflow: hidden;
-}
-
-/* Maintain Full-Screen, Responsive, and Cover Properly */
-.homepage-background {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-image: url('/public/homepage.jpg');
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-}
-
 body {
   margin: 0;
-  font-family: 'Arial', sans-serif;
+  font-family: "Abel", sans-serif;
+  font-weight: 400;
+  font-style: normal;
   overflow-x: hidden;
   scroll-behavior: smooth;
 }
@@ -41,8 +20,6 @@ body {
   align-items: center;
   text-align: center;
 }
-
-
 
 /* Upload Section */
 .upload-section {
@@ -71,9 +48,8 @@ body {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background-color: rgba(255, 255, 255, 0.8); /* Semi-transparent for better contrast */
+  background-color: rgba(255, 255, 255, 0.8);
   cursor: pointer;
-  transition: background 0.3s;
 }
 
 .upload-box:hover {
@@ -128,14 +104,16 @@ body {
 }
 
 .clear-button {
-  padding: 8px 16px;
-  font-size: 1rem;
+  padding: 12px 20px;
+  font-size: 18px;
+  font-family: "Abel", sans-serif;
+  font-weight: 400;
+  font-style: normal;
   background-color: #ff3f34;
   color: #fff;
   border: none;
-  border-radius: 5px;
+  border-radius: 8px;
   cursor: pointer;
-  transition: background 0.3s;
 }
 
 .clear-button:hover {
