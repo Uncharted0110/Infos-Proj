@@ -38,42 +38,76 @@ body {
   text-align: center;
 }
 
-.upload-box {
-  width: 100%;
-  max-width: 500px;
-  height: 200px;
-  border: 2px dashed #ccc;
-  border-radius: 10px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  background-color: rgba(255, 255, 255, 0.8);
-  cursor: pointer;
-}
-
 .upload-container {
   display: flex;
+  justify-content: space-around;
+  align-items: stretch; /* Ensures boxes have same height */
   gap: 20px;
-  width: 80%;
-  justify-content: center;
+  margin-top: 20px;
+  width: 100%;
+  max-width: 1200px;
 }
 
 .upload-box, .translation-box {
-  width: 55%;
-  height: 300px;
+  width: 45%;
+  min-height: 300px;
+  border-radius: 10px;
+  padding: 10px;
+  box-sizing: border-box;
+  transition: all 0.3s ease-in-out;
+  background-color: rgba(255, 255, 255, 0.8);
+}
+
+.upload-box {
   border: 2px dashed #aaa;
   display: flex;
-  flex-direction: column;
-  justify-content: center;
   align-items: center;
-  text-align: center;
-  padding: 20px;
+  justify-content: center;
+  flex-direction: column;
   cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+
+.translation-box {
+  border: 2px solid #aaa;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 .upload-box:hover {
   background-color: rgba(255, 255, 255, 1);
+}
+
+.upload-box input {
+  display: none;
+}
+
+.upload-box .image-preview {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+.translation-text-container {
+  flex-grow: 1;
+  overflow-y: auto;
+  margin: 10px 0;
+  background-color: rgba(255, 255, 255, 0.9);
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  padding: 10px;
+}
+
+.translation-text {
+  margin: 0;
+  text-align: left;
+  overflow-wrap: break-word;
+}
+
+.button-container {
+  margin-top: 10px;
 }
 
 .section-title {
@@ -92,6 +126,22 @@ body {
   display: none;
 }
 
+.language-selection {
+  margin-top: 20px;
+  background-color: rgba(255, 255, 255, 0.8);
+  padding: 10px 20px;
+  border-radius: 10px;
+  font-size: 20px;
+}
+
+.language-selection select {
+  padding: 5px 10px;
+  border-radius: 5px;
+  margin-left: 10px;
+  font-family: "Abel", sans-serif;
+  font-size: 20px;
+}
+
 /* Scroll Indicator */
 .scroll-indicator {
   position: fixed;
@@ -103,26 +153,7 @@ body {
   transition: width 0.2s ease-out;
 }
 
-/* Image Preview */
-.image-preview-container {
-  margin-top: 20px;
-  text-align: center;
-}
-
-.image-preview {
-  width: 100%;
-  max-width: 600px;
-  height: auto;
-  border: 2px solid #ccc;
-  border-radius: 10px;
-  margin-top: 10px;
-}
-
 /* Button Group for Clear Action */
-.button-group {
-  margin-top: 10px;
-}
-
 .clear-button {
   padding: 12px 20px;
   font-size: 18px;

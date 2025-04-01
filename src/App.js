@@ -1,12 +1,17 @@
-import React, { useRef, useEffect, useState } from 'react';
+import React, { useRef, useEffect, useState, useCallback } from 'react';
+import Tesseract from 'tesseract.js';
 import './App.css';
 
 function App() {
   const uploadSectionRef = useRef(null);
   const [scrollProgress, setScrollProgress] = useState(0);
   const [selectedImage, setSelectedImage] = useState(null);
-  const [translation, setTranslation] = useState('');
+  const [extractedText, setExtractedText] = useState('');
+  const [isExtracting, setIsExtracting] = useState(false);
+  const [language, setLanguage] = useState('eng');
+  const [boxHeight, setBoxHeight] = useState('300px');
 
+  // Infinite Scroll Progress Indicator
   useEffect(() => {
     const handleScroll = () => {
       const scrollHeight = document.documentElement.scrollHeight - window.innerHeight;
@@ -18,21 +23,60 @@ function App() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  // Extract text from image
+  const extractTextFromImage = useCallback(async (image, lang) => {
+    if (!image) return;
+    setIsExtracting(true);
+    setExtractedText('Extracting text...');
+    try {
+      const { data: { text } } = await Tesseract.recognize(image, lang, {
+        logger: (m) => console.log(m),
+      });
+      const extractedContent = text.trim() || 'No text found.';
+      setExtractedText(extractedContent);
+      
+      // Adjust height based on content length
+      if (extractedContent.length > 500) {
+        setBoxHeight('500px');
+      } else if (extractedContent.length > 200) {
+        setBoxHeight('400px');
+      } else {
+        setBoxHeight('300px');
+      }
+      
+    } catch (error) {
+      setExtractedText('Failed to extract text.');
+      console.error(error);
+    } finally {
+      setIsExtracting(false);
+    }
+  }, []);
+
+  // Handle image upload
   const handleImageUpload = (event) => {
     const file = event.target.files[0];
     if (file && file.type.startsWith('image/')) {
       const reader = new FileReader();
       reader.onloadend = () => {
         setSelectedImage(reader.result);
-        setTranslation('Translation will appear here...'); // Placeholder for translation logic
+        extractTextFromImage(reader.result, language);
       };
       reader.readAsDataURL(file);
     }
   };
 
+  // Re-extract text when language changes
+  useEffect(() => {
+    if (selectedImage) {
+      extractTextFromImage(selectedImage, language);
+    }
+  }, [language, extractTextFromImage, selectedImage]);
+
+  // Clear uploaded image
   const handleClearImage = () => {
     setSelectedImage(null);
-    setTranslation('');
+    setExtractedText('');
+    setBoxHeight('300px');
     if (uploadSectionRef.current) {
       uploadSectionRef.current.value = '';
     }
@@ -48,9 +92,10 @@ function App() {
       <div className="upload-section">
         <div className="upload-container">
           {/* Upload Box */}
-          <div
-            className="upload-box"
+          <div 
+            className="upload-box" 
             onClick={() => uploadSectionRef.current.click()}
+            style={{ height: boxHeight }}
           >
             {!selectedImage ? (
               <>
@@ -70,15 +115,33 @@ function App() {
           </div>
 
           {/* Translation Box */}
-          <div className="translation-box">
-            <h2 className="section-title">Translation</h2>
-            <p className="translation-text">{translation || 'No image uploaded yet.'}</p>
+          <div 
+            className="translation-box"
+            style={{ height: boxHeight }}
+          >
+            <h2 className="section-title">Extracted Text</h2>
+            <div className="translation-text-container">
+              <p className="translation-text">{isExtracting ? 'Extracting...' : extractedText || 'No text yet.'}</p>
+            </div>
             {selectedImage && (
-              <button onClick={handleClearImage} className="clear-button">
-                Clear Image
-              </button>
+              <div className="button-container">
+                <button onClick={handleClearImage} className="clear-button">
+                  Clear Image
+                </button>
+              </div>
             )}
           </div>
+        </div>
+
+        {/* Language Selection */}
+        <div className="language-selection">
+          <label>Select Language: </label>
+          <select value={language} onChange={(e) => setLanguage(e.target.value)}>
+            <option value="eng">English</option>
+            <option value="fra">French</option>
+            <option value="spa">Spanish</option>
+            <option value="hin">Hindi</option>
+          </select>
         </div>
       </div>
 
