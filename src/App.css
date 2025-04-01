@@ -52,6 +52,26 @@ body {
   cursor: pointer;
 }
 
+.upload-container {
+  display: flex;
+  gap: 20px;
+  width: 80%;
+  justify-content: center;
+}
+
+.upload-box, .translation-box {
+  width: 55%;
+  height: 300px;
+  border: 2px dashed #aaa;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 20px;
+  cursor: pointer;
+}
+
 .upload-box:hover {
   background-color: rgba(255, 255, 255, 1);
 }

@@ -5,8 +5,8 @@ function App() {
   const uploadSectionRef = useRef(null);
   const [scrollProgress, setScrollProgress] = useState(0);
   const [selectedImage, setSelectedImage] = useState(null);
+  const [translation, setTranslation] = useState('');
 
-  // Track scroll progress for smooth transition
   useEffect(() => {
     const handleScroll = () => {
       const scrollHeight = document.documentElement.scrollHeight - window.innerHeight;
@@ -18,21 +18,21 @@ function App() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Handle image upload and preview
   const handleImageUpload = (event) => {
     const file = event.target.files[0];
     if (file && file.type.startsWith('image/')) {
       const reader = new FileReader();
       reader.onloadend = () => {
         setSelectedImage(reader.result);
+        setTranslation('Translation will appear here...'); // Placeholder for translation logic
       };
       reader.readAsDataURL(file);
     }
   };
 
-  // Clear the selected image
   const handleClearImage = () => {
     setSelectedImage(null);
+    setTranslation('');
     if (uploadSectionRef.current) {
       uploadSectionRef.current.value = '';
     }
@@ -40,21 +40,26 @@ function App() {
 
   return (
     <div className="app-container">
-      {/* Homepage Section */}
       <div className="homepage-container">
         <div className="homepage-background fullscreen-background"></div>
       </div>
 
-      {/* Upload Section */}
-      <div className="upload-section upload-background">
-        {/* Dotted Upload Box with background */}
-        {!selectedImage && (
+      {/* Upload & Translation Section */}
+      <div className="upload-section">
+        <div className="upload-container">
+          {/* Upload Box */}
           <div
             className="upload-box"
             onClick={() => uploadSectionRef.current.click()}
           >
-            <h2 className="section-title">Upload Your Image</h2>
-            <p className="section-subtitle">Get your translations!</p>
+            {!selectedImage ? (
+              <>
+                <h2 className="section-title">Upload Your Image</h2>
+                <p className="section-subtitle">Get your translations!</p>
+              </>
+            ) : (
+              <img src={selectedImage} alt="Uploaded Preview" className="image-preview" />
+            )}
             <input
               ref={uploadSectionRef}
               type="file"
@@ -63,22 +68,20 @@ function App() {
               accept="image/*"
             />
           </div>
-        )}
 
-        {/* Show image preview if available */}
-        {selectedImage && (
-          <div className="image-preview-container">
-            <img src={selectedImage} alt="Uploaded Preview" className="image-preview" />
-            <div className="button-group">
+          {/* Translation Box */}
+          <div className="translation-box">
+            <h2 className="section-title">Translation</h2>
+            <p className="translation-text">{translation || 'No image uploaded yet.'}</p>
+            {selectedImage && (
               <button onClick={handleClearImage} className="clear-button">
                 Clear Image
               </button>
-            </div>
+            )}
           </div>
-        )}
+        </div>
       </div>
 
-      {/* Scroll Progress Indicator */}
       <div className="scroll-indicator" style={{ width: `${scrollProgress}%` }}></div>
     </div>
   );
