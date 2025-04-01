@@ -1,4 +1,5 @@
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from transformers import AutoTokenizer, AutoModelForSeq2SeqLM
 import torch
@@ -10,6 +11,15 @@ model = AutoModelForSeq2SeqLM.from_pretrained(model_path, local_files_only=True)
 model.eval()  # Set the model to evaluation mode
 
 app = FastAPI()
+
+# Allow CORS for your frontend (http://localhost:3000)
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:3000"],  # Allow only your frontend URL
+    allow_credentials=True,
+    allow_methods=["*"],  # Allow all HTTP methods
+    allow_headers=["*"],  # Allow all headers
+)
 
 class TranslationRequest(BaseModel):
     text: str

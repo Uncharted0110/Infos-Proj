@@ -7,7 +7,9 @@ function App() {
   const [scrollProgress, setScrollProgress] = useState(0);
   const [selectedImage, setSelectedImage] = useState(null);
   const [extractedText, setExtractedText] = useState('');
+  const [translatedText, setTranslatedText] = useState('');
   const [isExtracting, setIsExtracting] = useState(false);
+  const [isTranslating, setIsTranslating] = useState(false);
   const [language, setLanguage] = useState('eng');
   const [boxHeight, setBoxHeight] = useState('300px');
 
@@ -28,6 +30,7 @@ function App() {
     if (!image) return;
     setIsExtracting(true);
     setExtractedText('Extracting text...');
+    setTranslatedText('');
     try {
       const { data: { text } } = await Tesseract.recognize(image, lang, {
         logger: (m) => console.log(m),
@@ -43,7 +46,12 @@ function App() {
       } else {
         setBoxHeight('300px');
       }
-      
+
+      // Send extracted text to translation API
+      if (extractedContent !== 'No text found.') {
+        translateText(extractedContent);
+      }
+
     } catch (error) {
       setExtractedText('Failed to extract text.');
       console.error(error);
@@ -51,6 +59,27 @@ function App() {
       setIsExtracting(false);
     }
   }, []);
+
+  // Send extracted text to backend for translation
+  const translateText = async (text) => {
+    setIsTranslating(true);
+    setTranslatedText('Translating...');
+    try {
+      const response = await fetch('http://localhost:5000/generate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ text }),
+      });
+
+      const data = await response.json();
+      setTranslatedText(data.translation || 'Translation failed.');
+    } catch (error) {
+      setTranslatedText('Failed to translate text.');
+      console.error(error);
+    } finally {
+      setIsTranslating(false);
+    }
+  };
 
   // Handle image upload
   const handleImageUpload = (event) => {
@@ -76,6 +105,7 @@ function App() {
   const handleClearImage = () => {
     setSelectedImage(null);
     setExtractedText('');
+    setTranslatedText('');
     setBoxHeight('300px');
     if (uploadSectionRef.current) {
       uploadSectionRef.current.value = '';
@@ -114,7 +144,7 @@ function App() {
             />
           </div>
 
-          {/* Translation Box */}
+          {/* OCR Result Box */}
           <div 
             className="translation-box"
             style={{ height: boxHeight }}
@@ -123,18 +153,32 @@ function App() {
             <div className="translation-text-container">
               <p className="translation-text">{isExtracting ? 'Extracting...' : extractedText || 'No text yet.'}</p>
             </div>
-            {selectedImage && (
-              <div className="button-container">
-                <button onClick={handleClearImage} className="clear-button">
-                  Clear Image
-                </button>
-              </div>
-            )}
           </div>
-        </div>
 
+          {/* Translation Result Box */}
+          <div 
+            className="translation-box"
+            style={{ height: boxHeight }}
+          >
+            <h2 className="section-title">Translated Text</h2>
+            <div className="translation-text-container">
+              <p className="translation-text">{isTranslating ? 'Translating...' : translatedText || 'No translation yet.'}</p>
+            </div>
+          </div>
+
+          
+        </div>
+        {selectedImage && (
+            <div className="button-container">
+              <button onClick={handleClearImage} className="clear-button">
+                Clear Image
+              </button>
+            </div>
+          )}
         {/* Language Selection */}
         <div className="language-selection">
+          {/* Clear Image Button */}
+          
           <label>Select Language: </label>
           <select value={language} onChange={(e) => setLanguage(e.target.value)}>
             <option value="eng">English</option>
