@@ -39,3 +39,7 @@ async def root():
 async def generate(request: TranslationRequest):
     translated_text = translate_text(request.text)
     return {"translation": translated_text}
+
+
+
+# to run: uvicorn server:app --host 0.0.0.0 --port 5000 --reload
