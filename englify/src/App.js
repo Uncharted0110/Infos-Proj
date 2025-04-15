@@ -56,30 +56,30 @@ function App() {
   const translateText = async (text) => {
     setIsTranslating(true);
     setTranslatedText('Translating...');
-
+  
     const lines = text.split('\n').filter(line => line.trim() !== '');
     const translatedLines = [];
-
+  
     try {
       for (const line of lines) {
-        const response = await fetch('http://localhost:5000/generate', {
+        const response = await fetch("https://0d9a-34-86-67-187.ngrok-free.app/generate", {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
-            'Accept': 'application/json'
+            'Accept': 'application/json',
           },
           body: JSON.stringify({ text: line }),
         });
-
+  
         if (!response.ok) {
           throw new Error(`HTTP error! Status: ${response.status}`);
         }
-
+  
         const data = await response.json();
-        const translation = data.translations?.[0] || data.translation || 'Translation failed.';
+        const translation = data.translation || 'Translation failed.';
         translatedLines.push(translation);
       }
-
+  
       setTranslatedText(translatedLines.join('\n'));
     } catch (error) {
       setTranslatedText(`Failed to translate text: ${error.message}`);
@@ -87,7 +87,7 @@ function App() {
     } finally {
       setIsTranslating(false);
     }
-  };
+  }; 
 
 
   const handleImageUpload = (event) => {

@@ -41,5 +41,4 @@ async def generate(request: TranslationRequest):
     return {"translation": translated_text}
 
 
-
 # to run: uvicorn server:app --host 0.0.0.0 --port 5000 --reload
