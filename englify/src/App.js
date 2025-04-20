@@ -62,7 +62,7 @@ function App() {
   
     try {
       for (const line of lines) {
-        const response = await fetch("https://4c0a-34-86-67-187.ngrok-free.app/generate", {
+        const response = await fetch("http://35.200.176.35:8000/generate", {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
