@@ -62,7 +62,7 @@ function App() {
   
     try {
       for (const line of lines) {
-        const response = await fetch("http://35.200.176.35:8000/generate", {
+        const response = await fetch("https://stud-humble-properly.ngrok-free.app/generate", {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
