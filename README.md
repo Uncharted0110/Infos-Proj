@@ -17,4 +17,5 @@ git clone https://github.com/Uncharted0110/Infosys-Proj
 cd Infosys-Proj
 npm install
 npm start
+run the backend with the command mentioned
 ```
